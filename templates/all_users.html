@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+FitBuddy – Admin
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="card">
+
+
+    <span class="eyebrow">
+        ADMIN DASHBOARD
+    </span>
+
+
+    <h1>
+        All Users & Workout Plans
+    </h1>
+
+
+
+    {% if not authorized %}
+
+
+    <form
+        method="get"
+        class="admin-form"
+    >
+
+        <label>
+            Admin Key
+        </label>
+
+
+        <input
+            type="password"
+            name="admin_key"
+            required
+        >
+
+
+        <button
+            class="primary"
+            type="submit"
+        >
+
+            Open Dashboard
+
+        </button>
+
+    </form>
+
+
+
+    {% if error %}
+
+    <div class="alert error">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+
+    {% else %}
+
+
+
+    {% if not rows %}
+
+    <p>
+        No users yet.
+    </p>
+
+    {% endif %}
+
+
+
+    <div class="table-wrap">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        User
+                    </th>
+
+                    <th>
+                        Profile
+                    </th>
+
+                    <th>
+                        Goal
+                    </th>
+
+                    <th>
+                        Original Plan
+                    </th>
+
+                    <th>
+                        Updated Plan
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+
+                {% for row in rows %}
+
+
+                <tr>
+
+
+                    <td>
+
+                        <strong>
+                            {{ row.user.name }}
+                        </strong>
+
+                        <br>
+
+                        <small>
+                            {{ row.user.user_id }}
+                        </small>
+
+                    </td>
+
+
+
+                    <td>
+
+                        {{ row.user.age }}
+                        years
+
+                        <br>
+
+                        {{ row.user.weight }}
+                        kg
+
+                        <br>
+
+                        {{ row.user.intensity }}
+
+                    </td>
+
+
+
+                    <td>
+
+                        {{ row.user.goal }}
+
+                    </td>
+
+
+
+                    <td>
+
+
+                        {% if row.plan %}
+
+                        <pre>
+{{ row.plan.original_plan }}
+                        </pre>
+
+                        {% else %}
+
+                        —
+
+                        {% endif %}
+
+
+                    </td>
+
+
+
+                    <td>
+
+
+                        {% if row.plan and row.plan.updated_plan %}
+
+                        <pre>
+{{ row.plan.updated_plan }}
+                        </pre>
+
+                        {% else %}
+
+                        Not updated
+
+                        {% endif %}
+
+
+                    </td>
+
+
+                </tr>
+
+
+                {% endfor %}
+
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+
+    {% endif %}
+
+
+</section>
+
+
+{% endblock %}

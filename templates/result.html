@@ -1,0 +1,383 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Your FitBuddy Plan
+
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if message %}
+
+<div class="alert success">
+
+    ✅ {{ message }}
+
+</div>
+
+{% endif %}
+
+
+
+<section class="card profile">
+
+
+    <div>
+
+        <span class="eyebrow">
+            YOUR PERSONALIZED PLAN
+        </span>
+
+        <h1>
+            Hi {{ user.name }} 👋
+        </h1>
+
+    </div>
+
+
+    <div class="chips">
+
+        <span>
+            {{ user.goal }}
+        </span>
+
+        <span>
+            {{ user.intensity }} intensity
+        </span>
+
+        <span>
+            {{ user.experience_level }}
+        </span>
+
+        <span>
+            {{ user.weight }} kg
+        </span>
+
+    </div>
+
+
+</section>
+
+
+
+<section class="card">
+
+
+    <h2>
+        {{ original.title }}
+    </h2>
+
+
+    <p>
+        {{ original.summary }}
+    </p>
+
+
+
+    {% for day in original.days %}
+
+
+    <article class="day">
+
+
+        <div class="day-head">
+
+            <h3>
+                {{ day.day }}
+            </h3>
+
+            <span>
+                {{ day.focus }}
+            </span>
+
+        </div>
+
+
+        <p>
+
+            <strong>
+                Warm-up:
+            </strong>
+
+            {{ day.warmup }}
+
+        </p>
+
+
+
+        <div class="exercise-grid">
+
+
+            {% for ex in day.exercises %}
+
+
+            <div class="exercise">
+
+                <strong>
+                    {{ ex.name }}
+                </strong>
+
+
+                <small>
+
+                    {{ ex.sets }}
+                    sets
+
+                    •
+                    
+                    {{ ex.reps_or_duration }}
+
+                    •
+
+                    {{ ex.rest }}
+
+                </small>
+
+
+                <p>
+                    {{ ex.notes }}
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+
+        <p>
+
+            <strong>
+                Cooldown:
+            </strong>
+
+            {{ day.cooldown }}
+
+        </p>
+
+
+    </article>
+
+
+    {% endfor %}
+
+
+
+    <div class="notes">
+
+        <strong>
+            Safety:
+        </strong>
+
+
+        <ul>
+
+            {% for note in original.safety_notes %}
+
+            <li>
+                {{ note }}
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+
+</section>
+
+
+
+<section class="card tip">
+
+
+    <h2>
+        🥗 Nutrition & Recovery Tip
+    </h2>
+
+
+    <p>
+        {{ nutrition.tip }}
+    </p>
+
+
+    <p>
+
+        <strong>
+            Hydration:
+        </strong>
+
+        {{ nutrition.hydration }}
+
+    </p>
+
+
+    <p>
+
+        <strong>
+            Recovery:
+        </strong>
+
+        {{ nutrition.recovery }}
+
+    </p>
+
+
+</section>
+
+
+
+{% if updated %}
+
+
+<section class="card updated">
+
+
+    <h2>
+        🔄 Updated Plan
+    </h2>
+
+
+    <p>
+        {{ updated.summary }}
+    </p>
+
+
+
+    {% for day in updated.days %}
+
+
+    <article class="day compact">
+
+
+        <div class="day-head">
+
+            <h3>
+                {{ day.day }}
+            </h3>
+
+            <span>
+                {{ day.focus }}
+            </span>
+
+        </div>
+
+
+        <p>
+
+            <strong>
+                Warm-up:
+            </strong>
+
+            {{ day.warmup }}
+
+        </p>
+
+
+
+        {% for ex in day.exercises %}
+
+
+        <p>
+
+            •
+
+            <strong>
+                {{ ex.name }}
+            </strong>
+
+            —
+
+            {{ ex.sets }}
+            sets,
+
+            {{ ex.reps_or_duration }},
+
+            rest
+            {{ ex.rest }}
+
+        </p>
+
+
+        {% endfor %}
+
+
+
+        <p>
+
+            <strong>
+                Cooldown:
+            </strong>
+
+            {{ day.cooldown }}
+
+        </p>
+
+
+    </article>
+
+
+    {% endfor %}
+
+
+</section>
+
+
+{% endif %}
+
+
+
+<section class="card">
+
+
+    <h2>
+        💬 Refine Your Plan
+    </h2>
+
+
+    <form
+        method="post"
+        action="/submit-feedback"
+    >
+
+
+        <input
+            type="hidden"
+            name="user_id"
+            value="{{ user.user_id }}"
+        >
+
+
+        <textarea
+            name="feedback"
+            required
+            maxlength="2000"
+            placeholder="Example: Add more cardio and make Day 4 a full rest day."
+        ></textarea>
+
+
+        <button
+            class="primary"
+            type="submit"
+        >
+
+            Update Plan with AI
+
+        </button>
+
+
+    </form>
+
+
+</section>
+
+
+{% endblock %}
